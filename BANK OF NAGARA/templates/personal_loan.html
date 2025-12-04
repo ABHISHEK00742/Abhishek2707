@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2 style="text-align:center">Personal Loan</h2>
+<p style="text-align:center">Interest rate: <strong>9% per year</strong></p>
+
+<h3 style="text-align:center">Simple Interest Calculator</h3>
+<div class="centered">
+    <form method="post" class="form-inline">
+        <input type="hidden" name="action" value="calc">
+        <input type="number" name="principal" min="0" step="0.01" placeholder="Loan amount ($)" required>
+        <input type="number" name="duration_years" min="0" step="0.1" placeholder="Duration (years)" required>
+        <button class="btn" type="submit">Calculate</button>
+    </form>
+</div>
+
+{% if calculation %}
+<div class="card center-card">
+    <p>Principal: $ {{ '%.2f'|format(calculation.principal) }}</p>
+    <p>Rate: {{ calculation.interest_rate }}% per year</p>
+    <p>Time: {{ calculation.duration_years }} years</p>
+    <p><strong>Simple Interest: $ {{ '%.2f'|format(calculation.interest) }}</strong></p>
+</div>
+{% endif %}
+
+<h3 style="text-align:center">Apply for Personal Loan</h3>
+<div class="centered">
+    <form method="post" class="form grid" id="personalApplyForm">
+        <input type="hidden" name="action" value="apply">
+        <label>Name
+            <input type="text" name="name" required>
+        </label>
+        <label>Father Name
+            <input type="text" name="father_name" required>
+        </label>
+        <label>Aadhaar Number
+            <input type="text" name="aadhaar" required>
+        </label>
+        <label>Loan Amount ($)
+            <input type="number" name="principal" min="0" step="0.01" required>
+        </label>
+        <label>Duration (years)
+            <input type="number" name="duration_years" min="0" step="0.1" required>
+        </label>
+        <label>Account Number
+            <input type="text" name="account_number" required>
+        </label>
+    </form>
+</div>
+<div class="centered">
+    <button class="btn mt-05cm" type="submit" form="personalApplyForm">Submit Application</button>
+</div>
+
+{% if applied %}
+<p class="success" style="text-align:center">Personal loan application submitted successfully.</p>
+{% endif %}
+{% endblock %}

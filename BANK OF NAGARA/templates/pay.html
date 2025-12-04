@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="square">
+<h2>Pay</h2>
+
+<div class="rect-box">
+    <section>
+        <h3>Find recipient by Account Number</h3>
+        <form method="post" class="form-inline">
+            <input type="hidden" name="action" value="lookup">
+            <input type="text" name="account_number" placeholder="Account Number (user ID)" required>
+            <button class="btn" type="submit">Lookup</button>
+        </form>
+        {% if recipient %}
+        <div class="panel" style="margin-top:8px;">
+            <p><strong>Name:</strong> {{ recipient.name }}</p>
+            <p><strong>Address:</strong> {{ recipient.address }}</p>
+            <p><strong>Aadhaar:</strong> {{ recipient.aadhaar }}</p>
+        </div>
+        {% endif %}
+    </section>
+
+    <section style="margin-top:14px">
+        <h3>Send Payment</h3>
+        <form method="post" class="form-inline" id="sendForm">
+            <input type="hidden" name="action" value="transfer">
+            <input type="text" name="account_number" id="toAcct" placeholder="Recipient Account Number" required>
+            <input type="number" name="amount" id="payAmt" min="1" step="0.01" placeholder="Amount ($)" required>
+            <button class="btn" type="submit">Send</button>
+        </form>
+        <p class="muted" id="preview" style="display:none">Send <strong>$ <span id="prevAmt"></span></strong> to account <strong><span id="prevAcct"></span></strong></p>
+        {% if confirmation %}
+        <p class="success">Sent $ {{ '%.2f'|format(confirmation.amount) }} to {{ confirmation.to_name }} (A/C {{ confirmation.to_account }}).</p>
+        {% endif %}
+    </section>
+</div>
+</div>
+
+<script>
+(function(){
+    const acct = document.getElementById('toAcct');
+    const amt = document.getElementById('payAmt');
+    const box = document.getElementById('preview');
+    const aOut = document.getElementById('prevAcct');
+    const mOut = document.getElementById('prevAmt');
+    function fmt(x){return (isNaN(x)?0:x).toFixed(2)}
+    function update(){
+        const a = (acct.value||'').trim();
+        const m = parseFloat(amt.value||'0');
+        if(a && m>0){ box.style.display='block'; aOut.textContent=a; mOut.textContent=fmt(m); }
+        else{ box.style.display='none'; }
+    }
+    ['input','change'].forEach(ev=>{ acct.addEventListener(ev,update); amt.addEventListener(ev,update); });
+    update();
+})();
+</script>
+{% endblock %}

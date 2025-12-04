@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ BANK_NAME }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-black">
+        <div class="nav-left">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Niagara_Falls_from_Prospect_Point%2C_NY.JPG" alt="Niagara Falls" class="nav-logo">
+            <span class="brand">{{ BANK_NAME }}</span>
+        </div>
+        <div class="nav-center">
+            <span class="welcome">WELCOME TO BANK OF NIAGARA</span>
+        </div>
+        <div class="nav-right">
+            <a href="{{ url_for('home') }}" class="btn btn-outline">Home</a>
+            {% if session.get('user_id') %}
+                <a href="{{ url_for('dashboard') }}" class="btn">Dashboard</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn">Login</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash">
+                    {% for category, message in messages %}
+                        <li class="{{ category }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <div id="toast" class="toast" style="display:none"></div>
+    <script>
+    window.showToast = function(message){
+        var el = document.getElementById('toast');
+        if(!el) return; el.textContent = message; el.style.display = 'block';
+        clearTimeout(window.__toastTimer);
+        window.__toastTimer = setTimeout(function(){ el.style.display='none'; }, 2500);
+    }
+    </script>
+    <footer class="footer">© {{ BANK_NAME }} - Simple Banking System Project</footer>
+</body>
+</html>

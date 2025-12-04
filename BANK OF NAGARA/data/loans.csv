@@ -1,0 +1,1 @@
+loan_id,user_id,name,father_name,aadhaar,address,principal,duration_years,loan_type,interest_rate,calculated_interest,applied_at,status

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Create Account</h2>
+<form method="post" class="form grid" id="signupForm">
+    <label>Name
+        <input type="text" name="name" required>
+    </label>
+    <label>Age
+        <input type="number" name="age" min="0" required>
+    </label>
+    <label>Address
+        <input type="text" name="address" required>
+    </label>
+    <label>Aadhaar
+        <input type="text" name="aadhaar" required>
+    </label>
+    <label>Father Name
+        <input type="text" name="father_name" required>
+    </label>
+    <label>Mother Name
+        <input type="text" name="mother_name" required>
+    </label>
+    <label>Password
+        <input type="password" name="password" id="pw" required>
+    </label>
+    <label>Confirm Password
+        <input type="password" name="confirm_password" id="cpw" required>
+    </label>
+    <span id="pwMsg" class="muted" style="grid-column:1/-1"></span>
+    <button class="btn" type="submit">Create Account</button>
+</form>
+<script>
+(function(){
+    var p = document.getElementById('pw');
+    var c = document.getElementById('cpw');
+    var m = document.getElementById('pwMsg');
+    function check(){
+        if(!p.value && !c.value){ m.textContent=''; return; }
+        if(p.value === c.value){ m.textContent='Passwords match'; m.classList.remove('bad'); m.classList.add('good'); }
+        else { m.textContent='Passwords do not match'; m.classList.remove('good'); m.classList.add('bad'); }
+    }
+    ['input','change','keyup'].forEach(function(ev){ p.addEventListener(ev,check); c.addEventListener(ev,check); });
+    check();
+    var form = document.getElementById('signupForm');
+    form.addEventListener('submit', function(){ if(window.showToast) window.showToast('Creating your account...'); });
+})();
+</script>
+{% endblock %}

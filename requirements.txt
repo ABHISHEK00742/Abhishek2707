@@ -1,0 +1,7 @@
+# WikiNews Chatbot — Python Dependencies
+# Install with: pip install -r requirements.txt
+
+requests>=2.28.0
+flask>=2.2.0
+colorama>=0.4.6
+duckduckgo-search>=4.0.0
